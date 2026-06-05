@@ -11,6 +11,10 @@ spring:
       path: "/h2"
   profiles:
     include: null
+  data:
+    mongodb:
+      uri: "mongodb://127.0.0.1:27017/test"
+      enabled: true
 management:
   endpoints:
     web:
@@ -22,3 +26,12 @@ management:
         enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+    operationsSorter: "method"
+    tagsSorter: "alpha"
+    display-request-duration: true
+    filter: true
+  api-docs:
+    path: "/v3/api-docs"

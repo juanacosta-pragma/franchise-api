@@ -27,6 +27,12 @@ subprojects {
         useJUnitPlatform()
     }
 
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
+
     dependencies {
         implementation 'io.projectreactor:reactor-core'
         implementation 'io.projectreactor.addons:reactor-extra'
@@ -40,8 +46,8 @@ subprojects {
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
         testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
         testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-        implementation platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
         pitest "org.pitest:pitest-history-plugin:${pitestHistoryVersion}"
+
     }
 
     tasks.withType(Test).configureEach {
