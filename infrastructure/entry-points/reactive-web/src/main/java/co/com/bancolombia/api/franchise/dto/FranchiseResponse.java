@@ -16,7 +16,7 @@ import java.util.List;
 public class FranchiseResponse {
     @Schema(description = "Franchise unique identifier", example = "507f1f77bcf86cd799439011")
     private String id;
-    @Schema(description = "Franchise name", example = "Piza Company")
+    @Schema(description = "Franchise name", example = "Pizza Company")
     private String name;
     @Schema(description = "List of branches")
     private List<BranchResponse> branches;

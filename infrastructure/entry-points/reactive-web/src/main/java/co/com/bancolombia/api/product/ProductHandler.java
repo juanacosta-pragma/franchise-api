@@ -1,13 +1,9 @@
 package co.com.bancolombia.api.product;
 
-import co.com.bancolombia.api.branch.dto.BranchRequest;
-import co.com.bancolombia.api.branch.dto.BranchResponse;
 import co.com.bancolombia.api.product.dto.ProductRequest;
 import co.com.bancolombia.api.product.dto.ProductResponse;
 import co.com.bancolombia.api.product.dto.StockUpdateRequest;
-import co.com.bancolombia.model.branch.Branch;
 import co.com.bancolombia.model.product.Product;
-import co.com.bancolombia.usecase.franchise.BranchUseCase;
 import co.com.bancolombia.usecase.franchise.ProductUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class FranchiseRequest {
-    @Schema(description = "Franchise name", example = "Piza Company")
+    @Schema(description = "Franchise name", example = "Pizza Company")
     private String name;
 }
 

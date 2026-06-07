@@ -5,6 +5,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
     implementation 'org.reactivecommons.utils:object-mapper-api:0.1.0'
 
-    runtimeOnly 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.21.0' // TODO: remove this dependency to connect to real database
+    // Resilience4j Circuit Breaker
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-circuitbreaker:2.1.0'
+    implementation 'io.github.resilience4j:resilience4j-reactor:2.1.0'
+
+    runtimeOnly 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.21.0'
     testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
 }

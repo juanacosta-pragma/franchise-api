@@ -35,3 +35,17 @@ springdoc:
     filter: true
   api-docs:
     path: "/v3/api-docs"
+resilience4j:
+  circuitbreaker:
+    instances:
+      mongoCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 2
+        permittedNumberOfCallsInHalfOpenState: 2
+        slidingWindowType: COUNT_BASED
+        minimumNumberOfCalls: 1
+        waitDurationInOpenState: 3s
+        failureRateThreshold: 50
+        recordExceptions:
+          - java.lang.Exception
+          - com.mongodb.MongoException

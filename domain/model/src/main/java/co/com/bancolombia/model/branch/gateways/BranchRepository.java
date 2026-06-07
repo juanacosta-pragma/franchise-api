@@ -6,8 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface BranchRepository {
     Flux<Branch> getAllBranches();
-    Mono<Branch> findById(String id);
-    Mono<Branch> save(Branch branch);
     Mono<Void> deleteById(String id);
 }
 

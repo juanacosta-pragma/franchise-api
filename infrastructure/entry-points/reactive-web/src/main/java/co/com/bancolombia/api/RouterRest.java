@@ -16,6 +16,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 @Configuration
 public class RouterRest {
 
+    //   FRANCHISE
     @Bean
     public RouterFunction<ServerResponse> routerFranchiseFunction(FranchiseHandler handler) {
         return RouterFunctions.route()
@@ -29,6 +30,7 @@ public class RouterRest {
                 .build();
     }
 
+    //   BRANCH
     @Bean
     public RouterFunction<ServerResponse> routerBranchFunction(BranchHandler handler) {
         return RouterFunctions.route()
@@ -39,6 +41,8 @@ public class RouterRest {
 
                 .build();
     }
+
+    //   PRODUCT
     @Bean
     public RouterFunction<ServerResponse> routerProductFunction(ProductHandler handler) {
         return RouterFunctions.route()
