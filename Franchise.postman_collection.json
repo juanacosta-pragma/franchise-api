@@ -1,0 +1,562 @@
+{
+  "info": {
+    "_postman_id": "46190fb6-3b54-43c0-94d3-b4839ca41f96",
+    "name": "Franchise",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55490490",
+    "_collection_link": "https://go.postman.co/collection/55490490-46190fb6-3b54-43c0-94d3-b4839ca41f96?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Branch",
+      "item": [
+        {
+          "name": "Get",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/branches/get/franchise/6a281e17d30ce8403410772c/branch/9478672e-732b-484f-8fd5-6875693170b5",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "branches",
+                "get",
+                "franchise",
+                "6a281e17d30ce8403410772c",
+                "branch",
+                "9478672e-732b-484f-8fd5-6875693170b5"
+              ]
+            },
+            "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Cali\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/branches/create/franchise/6a281e17d30ce8403410772c",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "branches",
+                "create",
+                "franchise",
+                "6a281e17d30ce8403410772c"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"name\": \"Dosquebradas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/branches/update/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "branches",
+                "update",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Banano\",\r\n    \"stock\": 121\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/create/franchise/6a281e17d30ce8403410772c/branch/9478672e-732b-484f-8fd5-6875693170b5",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "create",
+                "franchise",
+                "6a281e17d30ce8403410772c",
+                "branch",
+                "9478672e-732b-484f-8fd5-6875693170b5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetProduct",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Papitas\",\r\n    \"stock\": 160\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/get/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/34bf4674-6968-4c94-a22e-9881c8002994a",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "get",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "product",
+                "34bf4674-6968-4c94-a22e-9881c8002994a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetHighStock",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Papitas\",\r\n    \"stock\": 160\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/getHighStock/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "getHighStock",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "product",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\":\"Papitas\",\r\n    \"stock\": 160\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/delete/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/0bbc5e39-dad5-4329-9eeb-4e99945b37ae",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "delete",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "product",
+                "0bbc5e39-dad5-4329-9eeb-4e99945b37ae"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateProductStock",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"stock\": 161\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/productStock/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1/stock",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "productStock",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "product",
+                "98f07e53-52eb-4b0d-82a3-256c69a21dd1",
+                "stock"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateProductName",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"stock\": 161,\r\n    \"name\" : \"Cerveza Aguila\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}:8080/api/v1/products/productName/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "products",
+                "productName",
+                "franchise",
+                "6a22ebc5a5e540bc72c22906",
+                "branch",
+                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "product",
+                "98f07e53-52eb-4b0d-82a3-256c69a21dd1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "GetAll",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{base_url}}:8080/api/v1/franchises/getAll",
+          "protocol": "http",
+          "host": [
+            "{{base_url}}"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "franchises",
+            "getAll"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Franquisia2\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{{base_url}}:8080/api/v1/franchises/create",
+          "protocol": "http",
+          "host": [
+            "{{base_url}}"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "franchises",
+            "create"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"test3\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{base_url}}:8080/api/v1/franchises/update/6a22ebc5a5e540bc72c22906",
+          "protocol": "http",
+          "host": [
+            "{base_url}}"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "franchises",
+            "update",
+            "6a22ebc5a5e540bc72c22906"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"test3\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://{base_url}}:8080/api/v1/franchises/delete/6a22ebbaa5e540bc72c22904",
+          "protocol": "http",
+          "host": [
+            "{base_url}}"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "franchises",
+            "delete",
+            "6a22ebbaa5e540bc72c22904"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetById",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{base_url}}:8080/api/v1/franchises/getById/6a22ebc5a5e540bc72c22906",
+          "protocol": "http",
+          "host": [
+            "{base_url}}"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "franchises",
+            "getById",
+            "6a22ebc5a5e540bc72c22906"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
