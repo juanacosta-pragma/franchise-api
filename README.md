@@ -88,5 +88,6 @@ A continuación se describen los recursos aprovisionados:
 - **Fargate**: Se ha utilizado Fargate como motor de ejecución para los contenedores, lo que permite una gestión simplificada de la infraestructura sin necesidad de administrar servidores.
 
 Esta es la imagen del diagrama de infraestructura aprovisionada con Terraform:
+
 ![Diagrama de Infraestructura](Infra.png)
    
