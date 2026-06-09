@@ -45,3 +45,48 @@ Los entry points representan los puntos de entrada de la aplicación o el inicio
 Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
 
 **Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+
+
+## Deployment
+
+Esta aplicacion esta Construida con el fin de ser desplegada en un contenedor Docker, para esto se ha incluido un Dockerfile con la configuración necesaria para construir la imagen y ejecutar la aplicación dentro del contenedor.
+
+Se debe seguir los siguientes pasos para construir la imagen y ejecutar el contenedor:
+1. Construir la imagen de Docker:
+   ```bash
+   podman build -t franchise-pragma-api -f deployment/Dockerfile .
+   ```
+2. Ejecutar el AWS CLI:
+   ```bash
+   aws ecr get-login-password --region us-east-1 | podman login --username AWS --password-stdin 437952802980.dkr.ecr.us-east-1.amazonaws.com
+   ```
+3. Aprovisionar la infraestructura con terraform en /deployment/terraform:
+   ```bash
+   terraform init
+   terraform apply -auto-approve
+   ```
+4. Etiquetar la imagen para ECR:
+   ```bash
+   podman tag franchise-pragma-api:latest 437952802980.dkr.ecr.us-east-1.amazonaws.com/franchise-pragma-api:latest
+   ```
+5. Subir la imagen a ECR:
+   ```bash
+   podman push 437952802980.dkr.ecr.us-east-1.amazonaws.com/franchise-pragma-api:latest
+   ```
+6. Ejecutar el contenedor:
+   ```bash
+   podman run -d -p 8080:8080 --name franchise-pragma-api 437952802980.dkr.ecr.us-east-1.amazonaws.com/franchise-pragma-api:latest
+   ```
+   
+
+## Infraestructura
+La infraestructura de esta aplicación se ha aprovisionado utilizando Terraform, con el fin de crear los recursos necesarios en AWS para desplegar la aplicación de forma segura y escalable.
+
+A continuación se describen los recursos aprovisionados:
+- **ECR (Elastic Container Registry)**: Se ha creado un repositorio en ECR para almacenar la imagen de Docker de la aplicación.
+- **ECS (Elastic Container Service)**: Se ha configurado un clúster de ECS para ejecutar la aplicación en contenedores.
+- **Fargate**: Se ha utilizado Fargate como motor de ejecución para los contenedores, lo que permite una gestión simplificada de la infraestructura sin necesidad de administrar servidores.
+
+Esta es la imagen del diagrama de infraestructura aprovisionada con Terraform:
+![Diagrama de Infraestructura](Infra.png)
+   
