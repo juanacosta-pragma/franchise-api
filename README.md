@@ -89,7 +89,7 @@ A continuación se describen los recursos aprovisionados:
 
 Esta es la imagen del diagrama de infraestructura aprovisionada con Terraform:
 
-![Diagrama de Infraestructura](Infra.png)
+![Diagrama de Infraestructura](Infrastructure.png)
 
 Autor: [@juanacosta-pragma](https://github.com/juanacosta-pragma)
    
