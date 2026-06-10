@@ -1,9 +1,9 @@
 package co.com.bancolombia.api.product;
 
+import co.com.bancolombia.api.franchise.mapper.FranchiseMapper;
 import co.com.bancolombia.api.product.dto.ProductRequest;
-import co.com.bancolombia.api.product.dto.ProductResponse;
 import co.com.bancolombia.api.product.dto.StockUpdateRequest;
-import co.com.bancolombia.model.product.Product;
+import co.com.bancolombia.api.product.mapper.ProductMapper;
 import co.com.bancolombia.usecase.franchise.ProductUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,22 +19,21 @@ import java.net.URI;
 @Slf4j
 public class ProductHandler {
     private final ProductUseCase productUseCase;
+    private final ProductMapper productMapper;
+    private final FranchiseMapper franchiseMapper;
 
     public Mono<ServerResponse> addProduct(ServerRequest request) {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
-        log.info("Handler: Add product to branch {} in franchise {}", branchId, franchiseId);
         return request.bodyToMono(ProductRequest.class)
-                .flatMap(productRequest -> {
-                    Product product = Product.builder()
-                            .name(productRequest.getName())
-                            .stock(productRequest.getStock())
-                            .build();
-                    return productUseCase.create(franchiseId, branchId, product);
-                })
+                .doFirst(() -> log.info("Received request to add product to branch {} in franchise {}", branchId, franchiseId))
+                .filter(productRequest -> productRequest.getName() != null && !productRequest.getName().isBlank())
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("Product name is required")))
+                .map(productMapper::toModel)
+                .flatMap(product -> productUseCase.create(franchiseId, branchId, product))
                 .flatMap(franchise -> ServerResponse.created(
                                 URI.create("/franchises/" + franchiseId + "/branches/" + branchId + "/products"))
-                        .bodyValue(franchise))
+                        .bodyValue(franchiseMapper.toResponse(franchise)))
                 .doOnError(error -> log.error("Error adding product", error));
     }
 
@@ -42,9 +41,9 @@ public class ProductHandler {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
         String productId = request.pathVariable("productId");
-        log.info("Handler: Get product {} from branch {} in franchise {}", productId, branchId, franchiseId);
         return productUseCase.getProductByIdUseCase(franchiseId, branchId, productId)
-                .flatMap(product -> ServerResponse.ok().bodyValue(mapToResponse(product)))
+                .doFirst(() -> log.info("Received request to get product {} from branch {} in franchise {}", productId, branchId, franchiseId))
+                .flatMap(product -> ServerResponse.ok().bodyValue(productMapper.toResponse(product)))
                 .doOnError(error -> log.error("Error getting product", error));
     }
 
@@ -52,9 +51,9 @@ public class ProductHandler {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
         String productId = request.pathVariable("productId");
-        log.info("Handler: Delete product {} from branch {} in franchise {}", productId, branchId, franchiseId);
         return productUseCase.deleteProductFromBranchUseCase(franchiseId, branchId, productId)
-                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchise))
+                .doFirst(() -> log.info("Received request to delete product {} from branch {} in franchise {}", productId, branchId, franchiseId))
+                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchiseMapper.toResponse(franchise)))
                 .doOnError(error -> log.error("Error deleting product", error));
     }
 
@@ -62,10 +61,10 @@ public class ProductHandler {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
         String productId = request.pathVariable("productId");
-        log.info("Handler: Update product stock {} from branch {} in franchise {}", productId, branchId, franchiseId);
         return request.bodyToMono(StockUpdateRequest.class)
+                .doFirst(() -> log.info("Received request to update product stock {} from branch {} in franchise {}", productId, branchId, franchiseId))
                 .flatMap(stockUpdateRequest -> productUseCase.updateProductStockUseCase(franchiseId, branchId, productId, stockUpdateRequest.getStock()))
-                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchise))
+                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchiseMapper.toResponse(franchise)))
                 .doOnError(error -> log.error("Error updating product stock", error));
     }
 
@@ -73,29 +72,19 @@ public class ProductHandler {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
         String productId = request.pathVariable("productId");
-        log.info("Handler: Update product name {} from branch {} in franchise {}", productId, branchId, franchiseId);
         return request.bodyToMono(ProductRequest.class)
+                .doFirst(() -> log.info("Received request to update product name {} from branch {} in franchise {}", productId, branchId, franchiseId))
                 .flatMap(productRequest -> productUseCase.updateProductNameUseCase(franchiseId, branchId, productId, productRequest.getName()))
-                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchise))
+                .flatMap(franchise -> ServerResponse.ok().bodyValue(franchiseMapper.toResponse(franchise)))
                 .doOnError(error -> log.error("Error updating product name", error));
     }
 
     public Mono<ServerResponse> getHighestStockProduct(ServerRequest request) {
         String franchiseId = request.pathVariable("franchiseId");
         String branchId = request.pathVariable("branchId");
-        log.info("Handler: Get highest stock product from branch {} in franchise {}", branchId, franchiseId);
         return productUseCase.getHighestStockProductByBranchUseCase(franchiseId, branchId)
-                .flatMap(product -> ServerResponse.ok().bodyValue(mapToResponse(product)))
+                .doFirst(() -> log.info("Received request to get highest stock product from branch {} in franchise {}", branchId, franchiseId))
+                .flatMap(product -> ServerResponse.ok().bodyValue(productMapper.toResponse(product)))
                 .doOnError(error -> log.error("Error getting highest stock product", error));
     }
-
-    private ProductResponse mapToResponse(Product product) {
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .stock(product.getStock())
-                .build();
-    }
 }
-
-

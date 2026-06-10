@@ -5,6 +5,7 @@ import co.com.bancolombia.exception.dto.ErrorResponse;
 import co.com.bancolombia.usecase.franchise.exceptions.FranchiseNotFoundException;
 import co.com.bancolombia.usecase.franchise.exceptions.BranchNotFoundException;
 import co.com.bancolombia.usecase.franchise.exceptions.ProductNotFoundException;
+import co.com.bancolombia.usecase.franchise.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +89,30 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    /**
+     * Handles validation errors raised in handlers (blank/null fields, invalid input).
+     */
+    @ExceptionHandler({ValidationException.class, IllegalArgumentException.class})
+    public ResponseEntity<ErrorResponse> handleValidationException(
+            RuntimeException ex,
+            ServerWebExchange exchange) {
+
+        log.warn("Validation error: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error("Bad Request")
+                .message(ex.getMessage())
+                .errorCode("VALIDATION_ERROR")
+                .path(exchange.getRequest().getPath().value())
+                .requestId(exchange.getRequest().getId())
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponse);
     }
 

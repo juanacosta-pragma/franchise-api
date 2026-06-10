@@ -1,0 +1,23 @@
+aws_region   = "us-east-1"
+project_name = "franchise-pragma"
+environment  = "dev"
+
+container_image = "437952802980.dkr.ecr.us-east-1.amazonaws.com/franchise-pragma-api:latest"
+container_port  = 8080
+
+task_cpu      = "512"
+task_memory   = "1024"
+desired_count = 1
+
+log_retention_days = 7
+
+# IMPORTANTE: el mongodb_uri ya tiene un valor por defecto en variables.tf.
+# Sólo descomenta y sobreescribe si necesitas usar otra cadena de conexión.
+# mongodb_uri = "mongodb+srv://USER:PASSWORD@HOST/test?appName=franchise-db"
+
+tags = {
+  Project     = "franchise-pragma"
+  Environment = "dev"
+  ManagedBy   = "Terraform"
+}
+

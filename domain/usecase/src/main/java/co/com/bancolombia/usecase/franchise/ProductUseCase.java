@@ -8,14 +8,13 @@ import co.com.bancolombia.model.product.Product;
 import co.com.bancolombia.usecase.franchise.exceptions.BranchNotFoundException;
 import co.com.bancolombia.usecase.franchise.exceptions.FranchiseNotFoundException;
 import co.com.bancolombia.usecase.franchise.exceptions.ProductNotFoundException;
-import co.com.bancolombia.usecase.franchise.exceptions.ValidationException;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 
 @RequiredArgsConstructor
@@ -28,170 +27,98 @@ public class ProductUseCase {
     }
 
     public Mono<Franchise> create(String franchiseId, String branchId, Product product) {
-        if (product.getName() == null || product.getName().isBlank()) {
-            return Mono.error(new ValidationException("Product name is required"));
-        }
-        if (product.getStock() == null || product.getStock() < 0) {
-            return Mono.error(new ValidationException("Product stock must be non-negative"));
-        }
-
-        return franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
-
-                    Branch branch = franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
-
-                    product.setId(UUID.randomUUID().toString());
-                    if (branch.getProducts() == null) {
-                        branch.setProducts(new ArrayList<>());
-                    }
-                    branch.getProducts().add(product);
-                    return franchiseRepository.save(franchise);
-                });
+        return findFranchise(franchiseId)
+                .flatMap(franchise -> findBranch(franchise, branchId)
+                        .then(rebuildBranches(franchise, branchId, branch -> appendProduct(branch, product))))
+                .flatMap(franchiseRepository::save);
     }
 
     public Mono<Product> getProductByIdUseCase(String franchiseId, String branchId, String productId) {
-        return (Mono<Product>) franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
-
-                    return franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .map(branch -> {
-                                if (branch.getProducts() == null || branch.getProducts().isEmpty()) {
-                                    return Mono.error(new ProductNotFoundException("Product not found with id: " + productId));
-                                }
-
-                                return branch.getProducts().stream()
-                                        .filter(p -> p.getId().equals(productId))
-                                        .findFirst()
-                                        .map(Mono::just)
-                                        .orElseGet(() -> Mono.error(new ProductNotFoundException("Product not found with id: " + productId)));
-                            })
-                            .orElseGet(() -> Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId)));
-                });
+        return findFranchise(franchiseId)
+                .flatMap(franchise -> findBranch(franchise, branchId))
+                .flatMap(branch -> findProduct(branch, productId));
     }
 
     public Mono<Franchise> deleteProductFromBranchUseCase(String franchiseId, String branchId, String productId) {
-        return franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
-
-                    var branch = franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
-
-                    if (branch.getProducts() == null || branch.getProducts().isEmpty()) {
-                        return Mono.error(new ProductNotFoundException("Product not found with id: " + productId));
-                    }
-
-                    boolean removed = branch.getProducts().removeIf(p -> p.getId().equals(productId));
-                    if (!removed) {
-                        return Mono.error(new ProductNotFoundException("Product not found with id: " + productId));
-                    }
-
-                    return franchiseRepository.save(franchise);
-                });
+        return findFranchise(franchiseId)
+                .flatMap(franchise -> findBranch(franchise, branchId)
+                        .flatMap(branch -> findProduct(branch, productId))
+                        .then(rebuildBranches(franchise, branchId, branch -> removeProduct(branch, productId))))
+                .flatMap(franchiseRepository::save);
     }
 
     public Mono<Franchise> updateProductStockUseCase(String franchiseId, String branchId, String productId, Long newStock) {
-        if (newStock == null || newStock < 0) {
-            return Mono.error(new ValidationException("Product stock must be non-negative"));
-        }
-
-        return franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
-
-                    var branch = franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
-
-                    if (branch.getProducts() == null || branch.getProducts().isEmpty()) {
-                        return Mono.error(new ProductNotFoundException("Product not found with id: " + productId));
-                    }
-
-                    Product product = branch.getProducts().stream()
-                            .filter(p -> p.getId().equals(productId))
-                            .findFirst()
-                            .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-
-                    product.setStock(newStock);
-                    return franchiseRepository.save(franchise);
-                });
+        return updateProduct(franchiseId, branchId, productId, p -> p.withStock(newStock));
     }
 
     public Mono<Franchise> updateProductNameUseCase(String franchiseId, String branchId, String productId, String newName) {
-        if (newName == null || newName.isBlank()) {
-            return Mono.error(new ValidationException("Product name is required"));
-        }
-
-        return franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
-
-                    var branch = franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
-
-                    if (branch.getProducts() == null || branch.getProducts().isEmpty()) {
-                        return Mono.error(new ProductNotFoundException("Product not found with id: " + productId));
-                    }
-
-                    Product product = branch.getProducts().stream()
-                            .filter(p -> p.getId().equals(productId))
-                            .findFirst()
-                            .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-
-                    product.setName(newName);
-                    return franchiseRepository.save(franchise);
-                });
+        return updateProduct(franchiseId, branchId, productId, p -> p.withName(newName));
     }
 
-    public Mono<Product> getHighestStockProductByBranchUseCase (String franchiseId, String branchId) {
+    public Mono<Product> getHighestStockProductByBranchUseCase(String franchiseId, String branchId) {
+        return findFranchise(franchiseId)
+                .flatMap(franchise -> findBranch(franchise, branchId))
+                .flatMapMany(branch -> Flux.fromIterable(branch.getProducts()))
+                .reduce((a, b) -> a.getStock() >= b.getStock() ? a : b)
+                .switchIfEmpty(Mono.error(new ProductNotFoundException("No products found in branch")));
+    }
+
+    // --- private reactive helpers ---
+
+    private Mono<Franchise> findFranchise(String franchiseId) {
         return franchiseRepository.findById(franchiseId)
-                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)))
-                .flatMap(franchise -> {
-                    if (franchise.getBranches() == null || franchise.getBranches().isEmpty()) {
-                        return Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId));
-                    }
+                .switchIfEmpty(Mono.error(new FranchiseNotFoundException("Franchise not found with id: " + franchiseId)));
+    }
 
-                    var branch = franchise.getBranches().stream()
-                            .filter(b -> b.getId().equals(branchId))
-                            .findFirst()
-                            .orElseThrow(() -> new BranchNotFoundException("Branch not found with id: " + branchId));
+    private Mono<Branch> findBranch(Franchise franchise, String branchId) {
+        return Flux.fromIterable(franchise.getBranches())
+                .filter(b -> branchId.equals(b.getId()))
+                .next()
+                .switchIfEmpty(Mono.error(new BranchNotFoundException("Branch not found with id: " + branchId)));
+    }
 
-                    if (branch.getProducts() == null || branch.getProducts().isEmpty()) {
-                        return Mono.error(new ProductNotFoundException("No products found in branch"));
-                    }
+    private Mono<Product> findProduct(Branch branch, String productId) {
+        return Flux.fromIterable(branch.getProducts())
+                .filter(p -> productId.equals(p.getId()))
+                .next()
+                .switchIfEmpty(Mono.error(new ProductNotFoundException("Product not found with id: " + productId)));
+    }
 
-                    Product highestStockProduct = branch.getProducts().stream()
-                            .max(Comparator.comparing(Product::getStock))
-                            .orElseThrow(() -> new ProductNotFoundException("No products found in branch"));
+    private Mono<Franchise> updateProduct(String franchiseId, String branchId, String productId, UnaryOperator<Product> transform) {
+        return findFranchise(franchiseId)
+                .flatMap(franchise -> findBranch(franchise, branchId)
+                        .flatMap(branch -> findProduct(branch, productId))
+                        .then(rebuildBranches(franchise, branchId,
+                                branch -> updateProductInBranch(branch, productId, transform))))
+                .flatMap(franchiseRepository::save);
+    }
 
-                    return Mono.just(highestStockProduct);
-                });
+    private Mono<Franchise> rebuildBranches(Franchise franchise, String branchId, Function<Branch, Mono<Branch>> branchTransform) {
+        return Flux.fromIterable(franchise.getBranches())
+                .concatMap(b -> branchId.equals(b.getId()) ? branchTransform.apply(b) : Mono.just(b))
+                .collectList()
+                .map(franchise::withBranches);
+    }
+
+    private Mono<Branch> appendProduct(Branch branch, Product product) {
+        Product newProduct = product.withId(UUID.randomUUID().toString());
+        return Flux.fromIterable(branch.getProducts())
+                .concatWithValues(newProduct)
+                .collectList()
+                .map(branch::withProducts);
+    }
+
+    private Mono<Branch> removeProduct(Branch branch, String productId) {
+        return Flux.fromIterable(branch.getProducts())
+                .filter(p -> !productId.equals(p.getId()))
+                .collectList()
+                .map(branch::withProducts);
+    }
+
+    private Mono<Branch> updateProductInBranch(Branch branch, String productId, UnaryOperator<Product> transform) {
+        return Flux.fromIterable(branch.getProducts())
+                .map(p -> productId.equals(p.getId()) ? transform.apply(p) : p)
+                .collectList()
+                .map(branch::withProducts);
     }
 }
