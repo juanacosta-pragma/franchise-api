@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1080" font-family="Segoe UI, Arial, sans-serif" font-size="13">
+  <!-- ============================================================
+       Diagrama de Infraestructura AWS - Franchise Pragma API
+       Cuenta: 437952802980  -  Región: us-east-1
+       ============================================================ -->
+
+  <defs>
+    <!-- Flecha estándar -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#37475A"/>
+    </marker>
+    <marker id="arrow-dash" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#666"/>
+    </marker>
+
+    <!-- Sombra -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="1500" height="1080" fill="#FAFBFC"/>
+
+  <!-- Título -->
+  <text x="750" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#232F3E">
+    Diagrama de Infraestructura AWS — Franchise Pragma API
+  </text>
+  <text x="750" y="56" text-anchor="middle" font-size="13" fill="#5A6B7B">
+    Aprovisionado con Terraform · Cuenta 437952802980 · Región us-east-1 · Entorno dev
+  </text>
+
+  <!-- ─────────── Internet ─────────── -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="100" width="160" height="70" rx="10" fill="#FFFFFF" stroke="#999" stroke-width="1.5"/>
+    <text x="140" y="128" text-anchor="middle" font-size="22">🌐</text>
+    <text x="140" y="150" text-anchor="middle" font-weight="700" fill="#232F3E">Internet</text>
+    <text x="140" y="164" text-anchor="middle" font-size="11" fill="#5A6B7B">0.0.0.0/0</text>
+  </g>
+
+  <!-- ─────────── Usuarios / clientes ─────────── -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="200" width="160" height="60" rx="10" fill="#FFFFFF" stroke="#999" stroke-width="1.2"/>
+    <text x="140" y="225" text-anchor="middle" font-size="18">👤</text>
+    <text x="140" y="247" text-anchor="middle" font-size="11" fill="#5A6B7B">Clientes API REST · Postman</text>
+  </g>
+
+  <!-- ============================================================
+       AWS REGION CONTAINER
+       ============================================================ -->
+  <g>
+    <rect x="260" y="90" width="1160" height="820" rx="14"
+          fill="none" stroke="#FF9900" stroke-width="2.5" stroke-dasharray="10 6"/>
+    <rect x="276" y="78" width="240" height="26" rx="4" fill="#FF9900"/>
+    <text x="396" y="96" text-anchor="middle" font-weight="700" fill="#fff" font-size="13">
+      ☁  AWS Cloud — us-east-1
+    </text>
+  </g>
+
+  <!-- ============================================================
+       VPC DEFAULT
+       ============================================================ -->
+  <g>
+    <rect x="290" y="130" width="900" height="660" rx="12"
+          fill="#F4F8FD" stroke="#4A90D9" stroke-width="2"/>
+    <rect x="306" y="118" width="220" height="24" rx="3" fill="#4A90D9"/>
+    <text x="416" y="135" text-anchor="middle" font-weight="700" fill="#fff" font-size="12">
+      🔷 VPC Default · 2 AZs
+    </text>
+  </g>
+
+  <!-- ─────────── Security Group del ALB ─────────── -->
+  <g>
+    <rect x="320" y="170" width="320" height="120" rx="10"
+          fill="#EAF3FB" stroke="#4A90D9" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="335" y="190" font-size="11" font-weight="700" fill="#1F4E79">
+      🛡  Security Group — ALB
+    </text>
+    <text x="335" y="206" font-size="10" fill="#1F4E79">Ingress: 0.0.0.0/0 → TCP :80</text>
+    <text x="335" y="220" font-size="10" fill="#1F4E79">Egress:  ALL</text>
+
+    <!-- ALB icon box -->
+    <g filter="url(#shadow)">
+      <rect x="345" y="226" width="270" height="58" rx="6" fill="#8C4FFF" stroke="#5A2FAA" stroke-width="1.5"/>
+      <rect x="349" y="230" width="50" height="50" rx="4" fill="#fff"/>
+      <text x="374" y="262" text-anchor="middle" font-size="22">⚖</text>
+      <text x="410" y="246" font-size="12" font-weight="700" fill="#fff">Application Load Balancer</text>
+      <text x="410" y="261" font-size="10" fill="#fff">franchise-pragma-dev-alb</text>
+      <text x="410" y="275" font-size="10" fill="#fff">Internet-facing · HTTP :80 (Listener)</text>
+    </g>
+  </g>
+
+  <!-- ─────────── Target Group ─────────── -->
+  <g filter="url(#shadow)">
+    <rect x="680" y="200" width="280" height="90" rx="8" fill="#FFF8E1" stroke="#FFC107" stroke-width="1.5"/>
+    <text x="695" y="222" font-size="12" font-weight="700" fill="#5C4500">🎯 ALB Target Group</text>
+    <text x="695" y="238" font-size="10" fill="#5C4500">franchise-pragma-dev-tg</text>
+    <text x="695" y="252" font-size="10" fill="#5C4500">Protocol: HTTP · Port: 8080</text>
+    <text x="695" y="266" font-size="10" fill="#5C4500">Target type: ip (Fargate)</text>
+    <text x="695" y="280" font-size="10" fill="#5C4500">Health check: GET /actuator/health</text>
+  </g>
+
+  <!-- ─────────── Availability Zone 1 ─────────── -->
+  <g>
+    <rect x="320" y="330" width="400" height="220" rx="10"
+          fill="#FFFFFF" stroke="#3F8DCB" stroke-width="1.5"/>
+    <rect x="334" y="320" width="220" height="22" rx="3" fill="#3F8DCB"/>
+    <text x="444" y="336" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">
+      📍 Availability Zone — us-east-1a
+    </text>
+
+    <!-- SG API -->
+    <rect x="340" y="358" width="360" height="180" rx="8"
+          fill="#EAF3FB" stroke="#4A90D9" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <text x="352" y="376" font-size="10" font-weight="700" fill="#1F4E79">
+      🛡  SG API · Ingress: SG-ALB → TCP :8080
+    </text>
+
+    <!-- Fargate Task 1 -->
+    <g filter="url(#shadow)">
+      <rect x="352" y="388" width="336" height="138" rx="8" fill="#FF4F8B" stroke="#B72C5F" stroke-width="1.5"/>
+      <rect x="358" y="394" width="46" height="46" rx="4" fill="#fff"/>
+      <text x="381" y="425" text-anchor="middle" font-size="22">📦</text>
+      <text x="416" y="410" font-size="13" font-weight="700" fill="#fff">ECS Fargate · Task 1</text>
+      <text x="416" y="426" font-size="10" fill="#fff">franchise-pragma-dev-api</text>
+      <text x="358" y="458" font-size="10" fill="#fff">Image: franchise-pragma-api:latest</text>
+      <text x="358" y="474" font-size="10" fill="#fff">CPU: 512  ·  Memory: 1024 MB</text>
+      <text x="358" y="490" font-size="10" fill="#fff">Network mode: awsvpc · Public IP</text>
+      <text x="358" y="506" font-size="10" fill="#fff">Container Port: 8080</text>
+      <text x="358" y="522" font-size="10" fill="#fff">Spring Boot · WebFlux · Java 17</text>
+    </g>
+  </g>
+
+  <!-- ─────────── Availability Zone 2 ─────────── -->
+  <g>
+    <rect x="760" y="330" width="400" height="220" rx="10"
+          fill="#FFFFFF" stroke="#3F8DCB" stroke-width="1.5"/>
+    <rect x="774" y="320" width="220" height="22" rx="3" fill="#3F8DCB"/>
+    <text x="884" y="336" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">
+      📍 Availability Zone — us-east-1b
+    </text>
+
+    <rect x="780" y="358" width="360" height="180" rx="8"
+          fill="#EAF3FB" stroke="#4A90D9" stroke-width="1.2" stroke-dasharray="5 4"/>
+    <text x="792" y="376" font-size="10" font-weight="700" fill="#1F4E79">
+      🛡  SG API · Ingress: SG-ALB → TCP :8080
+    </text>
+
+    <!-- Fargate Task 2 -->
+    <g filter="url(#shadow)">
+      <rect x="792" y="388" width="336" height="138" rx="8" fill="#FF4F8B" stroke="#B72C5F" stroke-width="1.5"/>
+      <rect x="798" y="394" width="46" height="46" rx="4" fill="#fff"/>
+      <text x="821" y="425" text-anchor="middle" font-size="22">📦</text>
+      <text x="856" y="410" font-size="13" font-weight="700" fill="#fff">ECS Fargate · Task 2</text>
+      <text x="856" y="426" font-size="10" fill="#fff">franchise-pragma-dev-api</text>
+      <text x="798" y="458" font-size="10" fill="#fff">Image: franchise-pragma-api:latest</text>
+      <text x="798" y="474" font-size="10" fill="#fff">CPU: 512  ·  Memory: 1024 MB</text>
+      <text x="798" y="490" font-size="10" fill="#fff">Network mode: awsvpc · Public IP</text>
+      <text x="798" y="506" font-size="10" fill="#fff">Container Port: 8080</text>
+      <text x="798" y="522" font-size="10" fill="#fff">Spring Boot · WebFlux · Java 17</text>
+    </g>
+  </g>
+
+  <!-- ─────────── ECS Cluster + Service banner ─────────── -->
+  <g>
+    <rect x="320" y="580" width="840" height="80" rx="10"
+          fill="#FFF1F6" stroke="#FF4F8B" stroke-width="1.5"/>
+    <rect x="334" y="570" width="280" height="22" rx="3" fill="#FF4F8B"/>
+    <text x="474" y="586" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">
+      🚀 Amazon ECS · Cluster + Service
+    </text>
+    <text x="340" y="610" font-size="11" font-weight="700" fill="#7A1A3F">
+      Cluster: franchise-pragma-dev-cluster
+    </text>
+    <text x="340" y="626" font-size="10" fill="#7A1A3F">
+      Service: franchise-pragma-dev-service · Launch type: FARGATE · desired_count = 2
+    </text>
+    <text x="340" y="642" font-size="10" fill="#7A1A3F">
+      Task Definition: franchise-pragma-dev-task · health_check_grace_period = 60s
+    </text>
+    <text x="700" y="610" font-size="10" fill="#7A1A3F">Deployment: Rolling update</text>
+    <text x="700" y="626" font-size="10" fill="#7A1A3F">Distribución: 1 task por AZ (HA)</text>
+    <text x="700" y="642" font-size="10" fill="#7A1A3F">Auto-recuperación de tasks</text>
+  </g>
+
+  <!-- ─────────── CloudWatch Logs ─────────── -->
+  <g filter="url(#shadow)">
+    <rect x="320" y="690" width="400" height="80" rx="8" fill="#FF4F8B" stroke="#B72C5F" stroke-width="1.5"/>
+    <rect x="328" y="698" width="46" height="46" rx="4" fill="#fff"/>
+    <text x="351" y="729" text-anchor="middle" font-size="22">📊</text>
+    <text x="386" y="714" font-size="13" font-weight="700" fill="#fff">Amazon CloudWatch Logs</text>
+    <text x="386" y="730" font-size="10" fill="#fff">Log Group: /ecs/franchise-pragma-dev-api</text>
+    <text x="386" y="744" font-size="10" fill="#fff">Driver: awslogs · Retención: 7 días</text>
+    <text x="386" y="758" font-size="10" fill="#fff">Stream prefix: ecs</text>
+  </g>
+
+  <!-- ─────────── IAM Roles ─────────── -->
+  <g>
+    <rect x="760" y="690" width="400" height="80" rx="8"
+          fill="#FFF" stroke="#DD344C" stroke-width="1.5"/>
+    <rect x="774" y="680" width="160" height="22" rx="3" fill="#DD344C"/>
+    <text x="854" y="696" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">
+      🔐 AWS IAM
+    </text>
+    <g filter="url(#shadow)">
+      <rect x="770" y="710" width="190" height="52" rx="6" fill="#DD344C" stroke="#aa1f33"/>
+      <text x="780" y="726" font-size="10" font-weight="700" fill="#fff">Execution Role</text>
+      <text x="780" y="740" font-size="9" fill="#fff">ecs-execution-role</text>
+      <text x="780" y="753" font-size="9" fill="#fff">AmazonECSTaskExecutionRolePolicy</text>
+    </g>
+    <g filter="url(#shadow)">
+      <rect x="965" y="710" width="190" height="52" rx="6" fill="#DD344C" stroke="#aa1f33"/>
+      <text x="975" y="726" font-size="10" font-weight="700" fill="#fff">Task Role</text>
+      <text x="975" y="740" font-size="9" fill="#fff">ecs-task-role</text>
+      <text x="975" y="753" font-size="9" fill="#fff">Permisos de la app en runtime</text>
+    </g>
+  </g>
+
+  <!-- ============================================================
+       Servicios AWS fuera de la VPC (en la región)
+       ============================================================ -->
+
+  <!-- ─────────── Amazon ECR ─────────── -->
+  <g filter="url(#shadow)">
+    <rect x="1220" y="160" width="180" height="100" rx="8" fill="#FF4F8B" stroke="#B72C5F" stroke-width="1.5"/>
+    <rect x="1228" y="168" width="46" height="46" rx="4" fill="#fff"/>
+    <text x="1251" y="199" text-anchor="middle" font-size="22">🐳</text>
+    <text x="1310" y="184" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Amazon ECR</text>
+    <text x="1310" y="200" text-anchor="middle" font-size="9" fill="#fff">Elastic Container Registry</text>
+    <text x="1228" y="226" font-size="9" fill="#fff">437952802980.dkr.ecr.</text>
+    <text x="1228" y="238" font-size="9" fill="#fff">us-east-1.amazonaws.com</text>
+    <text x="1228" y="252" font-size="9" fill="#fff">/franchise-pragma-api:latest</text>
+  </g>
+
+  <!-- ─────────── Subnets info ─────────── -->
+  <g>
+    <rect x="1220" y="290" width="180" height="80" rx="8"
+          fill="#EAF3FB" stroke="#4A90D9" stroke-width="1.2"/>
+    <text x="1310" y="310" text-anchor="middle" font-size="12" font-weight="700" fill="#1F4E79">
+      🌐 Networking
+    </text>
+    <text x="1230" y="328" font-size="10" fill="#1F4E79">VPC: default</text>
+    <text x="1230" y="342" font-size="10" fill="#1F4E79">Subnets públicas: 2 (AZ a/b)</text>
+    <text x="1230" y="356" font-size="10" fill="#1F4E79">Internet Gateway: default IGW</text>
+  </g>
+
+  <!-- ─────────── Terraform Modules ─────────── -->
+  <g>
+    <rect x="1220" y="400" width="180" height="170" rx="8"
+          fill="#FFFFFF" stroke="#7B42BC" stroke-width="1.5"/>
+    <rect x="1234" y="390" width="150" height="22" rx="3" fill="#7B42BC"/>
+    <text x="1309" y="406" text-anchor="middle" font-weight="700" fill="#fff" font-size="11">
+      🛠  Terraform Modules
+    </text>
+    <text x="1232" y="430" font-size="10" font-weight="700" fill="#3D1F60">./modules/networking</text>
+    <text x="1232" y="444" font-size="9" fill="#3D1F60">VPC, Subnets, SGs</text>
+    <text x="1232" y="462" font-size="10" font-weight="700" fill="#3D1F60">./modules/iam</text>
+    <text x="1232" y="476" font-size="9" fill="#3D1F60">Execution + Task roles</text>
+    <text x="1232" y="494" font-size="10" font-weight="700" fill="#3D1F60">./modules/alb</text>
+    <text x="1232" y="508" font-size="9" fill="#3D1F60">ALB, Listener, TG</text>
+    <text x="1232" y="526" font-size="10" font-weight="700" fill="#3D1F60">./modules/ecs</text>
+    <text x="1232" y="540" font-size="9" fill="#3D1F60">Cluster, Task Def, Service</text>
+    <text x="1232" y="554" font-size="9" fill="#3D1F60">CloudWatch Log Group</text>
+  </g>
+
+  <!-- ============================================================
+       MongoDB Atlas (externo)
+       ============================================================ -->
+  <g filter="url(#shadow)">
+    <rect x="1220" y="610" width="180" height="110" rx="8" fill="#00ED64" stroke="#007A33" stroke-width="1.8"/>
+    <rect x="1228" y="618" width="46" height="46" rx="4" fill="#fff"/>
+    <text x="1251" y="650" text-anchor="middle" font-size="24">🍃</text>
+    <text x="1310" y="635" text-anchor="middle" font-size="13" font-weight="700" fill="#003B1F">MongoDB Atlas</text>
+    <text x="1310" y="650" text-anchor="middle" font-size="10" fill="#003B1F">(Servicio externo · SaaS)</text>
+    <text x="1228" y="676" font-size="9" fill="#003B1F">Cluster: franchise-db.fx23h97</text>
+    <text x="1228" y="688" font-size="9" fill="#003B1F">.mongodb.net</text>
+    <text x="1228" y="702" font-size="9" fill="#003B1F">Base: test</text>
+    <text x="1228" y="714" font-size="9" fill="#003B1F">Env: SPRING_DATA_MONGODB_URI</text>
+  </g>
+
+  <!-- ============================================================
+       FLECHAS / FLUJO DE TRÁFICO
+       ============================================================ -->
+
+  <!-- Internet → ALB -->
+  <path d="M220 135 L345 250" stroke="#37475A" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="240" y="178" font-size="10" font-weight="700" fill="#232F3E">HTTP :80</text>
+
+  <!-- Clientes → Internet -->
+  <path d="M220 230 L262 230" stroke="#37475A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- ALB → Target Group -->
+  <path d="M615 255 L680 250" stroke="#37475A" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="618" y="246" font-size="10" font-weight="700" fill="#232F3E">forward</text>
+
+  <!-- TG → Task1 -->
+  <path d="M760 290 L540 388" stroke="#37475A" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="610" y="335" font-size="10" font-weight="700" fill="#232F3E">HTTP :8080</text>
+
+  <!-- TG → Task2 -->
+  <path d="M880 290 L960 388" stroke="#37475A" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="900" y="345" font-size="10" font-weight="700" fill="#232F3E">HTTP :8080</text>
+
+  <!-- Task1 → CloudWatch Logs -->
+  <path d="M460 526 L460 690" stroke="#37475A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="465" y="610" font-size="10" fill="#232F3E">awslogs</text>
+
+  <!-- Task2 → CloudWatch Logs -->
+  <path d="M870 526 L600 690" stroke="#37475A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="700" y="615" font-size="10" fill="#232F3E">awslogs</text>
+
+  <!-- Task1 → ECR (docker pull) -->
+  <path d="M688 410 L1220 200" stroke="#666" stroke-width="1.3" fill="none"
+        stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+  <text x="980" y="290" font-size="10" font-style="italic" fill="#444">docker pull (al iniciar)</text>
+
+  <!-- Task2 → ECR -->
+  <path d="M1128 400 L1220 240" stroke="#666" stroke-width="1.3" fill="none"
+        stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+
+  <!-- Task1 → MongoDB Atlas -->
+  <path d="M688 470 L1220 660" stroke="#007A33" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <text x="900" y="540" font-size="10" font-weight="700" fill="#007A33">MongoDB URI (TLS)</text>
+
+  <!-- Task2 → MongoDB Atlas -->
+  <path d="M1128 470 L1220 645" stroke="#007A33" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- IAM Execution Role → Tasks (assume) -->
+  <path d="M770 720 L688 510" stroke="#DD344C" stroke-width="1.3" fill="none"
+        stroke-dasharray="4 3" marker-end="url(#arrow-dash)"/>
+  <text x="700" y="640" font-size="10" font-style="italic" fill="#aa1f33">sts:AssumeRole</text>
+
+  <path d="M965 720 L1128 510" stroke="#DD344C" stroke-width="1.3" fill="none"
+        stroke-dasharray="4 3" marker-end="url(#arrow-dash)"/>
+
+  <!-- ============================================================
+       LEYENDA
+       ============================================================ -->
+  <g>
+    <rect x="40" y="930" width="1420" height="120" rx="10"
+          fill="#FFFFFF" stroke="#CCC" stroke-width="1"/>
+    <text x="55" y="952" font-size="13" font-weight="700" fill="#232F3E">Leyenda de servicios AWS</text>
+
+    <!-- Compute -->
+    <rect x="55" y="965" width="20" height="14" rx="2" fill="#FF4F8B"/>
+    <text x="82" y="977" font-size="11" fill="#232F3E">Compute / Containers (ECS, ECR, CloudWatch)</text>
+
+    <!-- Networking -->
+    <rect x="350" y="965" width="20" height="14" rx="2" fill="#8C4FFF"/>
+    <text x="377" y="977" font-size="11" fill="#232F3E">Networking &amp; Content Delivery (ALB)</text>
+
+    <!-- Security -->
+    <rect x="650" y="965" width="20" height="14" rx="2" fill="#DD344C"/>
+    <text x="677" y="977" font-size="11" fill="#232F3E">Security, Identity &amp; Compliance (IAM)</text>
+
+    <!-- VPC/SG -->
+    <rect x="950" y="965" width="20" height="14" rx="2" fill="#EAF3FB" stroke="#4A90D9"/>
+    <text x="977" y="977" font-size="11" fill="#232F3E">VPC / Security Groups</text>
+
+    <!-- External -->
+    <rect x="1170" y="965" width="20" height="14" rx="2" fill="#00ED64"/>
+    <text x="1197" y="977" font-size="11" fill="#232F3E">Servicio externo (MongoDB Atlas)</text>
+
+    <!-- Lineas -->
+    <line x1="55" y1="1005" x2="100" y2="1005" stroke="#37475A" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="108" y="1009" font-size="11" fill="#232F3E">Tráfico de red (HTTP/HTTPS)</text>
+
+    <line x1="350" y1="1005" x2="395" y2="1005" stroke="#666" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#arrow-dash)"/>
+    <text x="403" y="1009" font-size="11" fill="#232F3E">Pull de imagen / IAM AssumeRole</text>
+
+    <line x1="650" y1="1005" x2="695" y2="1005" stroke="#007A33" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="703" y="1009" font-size="11" fill="#232F3E">Conexión cifrada a base de datos</text>
+
+    <text x="55" y="1035" font-size="10" fill="#5A6B7B">
+      Recursos provisionados con Terraform en deployment/terraform · Módulos: networking · iam · alb · ecs
+    </text>
+  </g>
+</svg>
+

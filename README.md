@@ -80,16 +80,44 @@ Se debe seguir los siguientes pasos para construir la imagen y ejecutar el conte
    
 
 ## Infraestructura
-La infraestructura de esta aplicación se ha aprovisionado utilizando Terraform, con el fin de crear los recursos necesarios en AWS para desplegar la aplicación de forma segura y escalable.
+La infraestructura de esta aplicación se ha aprovisionado utilizando **Terraform** (módulos en `deployment/terraform/modules`), con el fin de crear los recursos necesarios en AWS para desplegar la aplicación de forma segura, escalable y altamente disponible (multi-AZ).
 
-A continuación se describen los recursos aprovisionados:
-- **ECR (Elastic Container Registry)**: Se ha creado un repositorio en ECR para almacenar la imagen de Docker de la aplicación.
-- **ECS (Elastic Container Service)**: Se ha configurado un clúster de ECS para ejecutar la aplicación en contenedores.
-- **Fargate**: Se ha utilizado Fargate como motor de ejecución para los contenedores, lo que permite una gestión simplificada de la infraestructura sin necesidad de administrar servidores.
+A continuación se describen los recursos aprovisionados, agrupados por dominio:
 
-Esta es la imagen del diagrama de infraestructura aprovisionada con Terraform:
+### 🌐 Networking (módulo `networking`)
+- **VPC default** de la cuenta `437952802980` en la región `us-east-1`.
+- **Subnets públicas** distribuidas en 2 Availability Zones (`us-east-1a` y `us-east-1b`) para alta disponibilidad.
+- **Security Group del ALB**: permite ingreso desde `0.0.0.0/0` por TCP `:80`.
+- **Security Group de las tasks**: permite ingreso únicamente desde el SG del ALB hacia el puerto del contenedor `:8080` (acceso menos privilegiado).
 
-![Diagrama de Infraestructura](Infrastructure.png)
+### ⚖️ Application Load Balancer (módulo `alb`)
+- **ALB internet-facing** `franchise-pragma-dev-alb` con listener HTTP en el puerto `:80`.
+- **Target Group** `franchise-pragma-dev-tg` con target type `ip` (necesario para Fargate con `awsvpc`), protocolo HTTP en puerto `:8080`.
+- **Health Check** apuntando a `GET /actuator/health` para detectar tasks no saludables y reemplazarlas.
+
+### 🚀 Compute — ECS Fargate (módulo `ecs`)
+- **ECS Cluster**: `franchise-pragma-dev-cluster`.
+- **Task Definition** con launch type **Fargate** (`awsvpc`), `512` CPU units y `1024 MB` de memoria.
+- **ECS Service** `franchise-pragma-dev-service` con `desired_count = 2`, distribuyendo una task por AZ.
+- **CloudWatch Log Group** `/ecs/franchise-pragma-dev-api` con retención de 7 días para los logs del contenedor (driver `awslogs`).
+
+### 🐳 Container Registry
+- **Amazon ECR**: repositorio `437952802980.dkr.ecr.us-east-1.amazonaws.com/franchise-pragma-api` desde el que las tasks hacen *pull* de la imagen `:latest` al iniciar.
+
+### 🔐 IAM (módulo `iam`)
+- **Execution Role** (`ecs-execution-role`) con la política administrada `AmazonECSTaskExecutionRolePolicy` (permite a ECS hacer pull desde ECR y escribir logs en CloudWatch).
+- **Task Role** (`ecs-task-role`) usado por la aplicación en runtime para invocar APIs de AWS si fuera necesario.
+
+### 🍃 Persistencia (servicio externo)
+- **MongoDB Atlas** — `franchise-db.fx23h97.mongodb.net`. La URI se inyecta a la task como variable de entorno `SPRING_DATA_MONGODB_URI`. La conexión se realiza vía TLS desde las tasks hacia Atlas a través de Internet (no usa VPC peering en este entorno).
+
+### 🗺️ Diagrama de infraestructura
+
+El siguiente diagrama detalla cada componente de AWS, sus relaciones y el flujo de tráfico. Está en formato SVG (vectorial) — haz clic para verlo a tamaño completo y poder hacer zoom sin perder nitidez:
+
+![Diagrama de Infraestructura](Infrastructure.svg)
+
+> 💡 También puedes consultar el diagrama interactivo en Mermaid en [`deployment/terraform/ARCHITECTURE_DIAGRAM.md`](deployment/terraform/ARCHITECTURE_DIAGRAM.md), listo para abrir en draw.io.
 
 Autor: [@juanacosta-pragma](https://github.com/juanacosta-pragma)
    

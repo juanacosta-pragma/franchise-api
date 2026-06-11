@@ -31,3 +31,23 @@ resource "aws_iam_role" "task" {
   tags = var.tags
 }
 
+# Permisos para ECS Exec (SSM Session Manager dentro del contenedor)
+data "aws_iam_policy_document" "ecs_exec" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role_policy" "task_ecs_exec" {
+  name   = "${var.name_prefix}-ecs-exec"
+  role   = aws_iam_role.task.id
+  policy = data.aws_iam_policy_document.ecs_exec.json
+}
+

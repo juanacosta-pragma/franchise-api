@@ -1,3 +1,13 @@
+output "alb_dns_name" {
+  description = "DNS público del ALB — usa este URL para consumir la API"
+  value       = module.alb.alb_dns_name
+}
+
+output "api_base_url" {
+  description = "URL base de la API a través del ALB"
+  value       = "http://${module.alb.alb_dns_name}"
+}
+
 output "cluster_name" {
   description = "Nombre del clúster ECS"
   value       = module.ecs.cluster_name
@@ -18,8 +28,12 @@ output "log_group_name" {
   value       = module.ecs.log_group_name
 }
 
+output "availability_zones" {
+  description = "AZs donde corren las tasks"
+  value       = module.networking.availability_zones
+}
+
 output "security_group_id" {
   description = "ID del Security Group del servicio"
   value       = module.networking.security_group_id
 }
-

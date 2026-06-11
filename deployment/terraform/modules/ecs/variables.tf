@@ -72,3 +72,13 @@ variable "tags" {
   default     = {}
 }
 
+variable "target_group_arn" {
+  description = "ARN del Target Group del ALB al que se registra el servicio"
+  type        = string
+}
+
+variable "health_check_grace_period_seconds" {
+  description = "Segundos que ECS espera antes de comenzar los health checks (útil para apps lentas en arrancar)"
+  type        = number
+  default     = 60
+}

@@ -7,7 +7,14 @@ container_port  = 8080
 
 task_cpu      = "512"
 task_memory   = "1024"
-desired_count = 1
+
+# Alta disponibilidad: 2 tareas en 2 zonas de disponibilidad
+desired_count = 2
+az_count      = 2
+
+# Health check — Spring Boot Actuator
+health_check_path                 = "/actuator/health"
+health_check_grace_period_seconds = 60
 
 log_retention_days = 7
 

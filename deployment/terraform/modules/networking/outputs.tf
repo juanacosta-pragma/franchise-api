@@ -4,12 +4,21 @@ output "vpc_id" {
 }
 
 output "subnet_ids" {
-  description = "IDs de las subnets default"
-  value       = data.aws_subnets.default.ids
+  description = "Subnets seleccionadas (una por AZ)"
+  value       = local.selected_subnet_ids
+}
+
+output "availability_zones" {
+  description = "AZs en uso"
+  value       = local.selected_azs
 }
 
 output "security_group_id" {
-  description = "ID del Security Group creado para la API"
+  description = "ID del Security Group de las tasks (solo recibe trafico del ALB)"
   value       = aws_security_group.api.id
 }
 
+output "alb_security_group_id" {
+  description = "ID del Security Group del ALB"
+  value       = aws_security_group.alb.id
+}

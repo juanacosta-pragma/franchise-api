@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "46190fb6-3b54-43c0-94d3-b4839ca41f96",
-    "name": "Franchise",
+    "_postman_id": "df503174-5517-4fc9-9d3b-fe76db3465e7",
+    "name": "Franchise Dev",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55490490",
-    "_collection_link": "https://go.postman.co/collection/55490490-46190fb6-3b54-43c0-94d3-b4839ca41f96?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/55490490-df503174-5517-4fc9-9d3b-fe76db3465e7?source=collection_link"
   },
   "item": [
     {
@@ -31,21 +31,20 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/branches/get/franchise/6a281e17d30ce8403410772c/branch/9478672e-732b-484f-8fd5-6875693170b5",
+              "raw": "http://{{base_url}}/api/v1/branches/get/franchise/6a29b9edf7c9abd05574e73c/branch/af66d570-e2b3-4e6f-be05-8921b325f071",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
                 "branches",
                 "get",
                 "franchise",
-                "6a281e17d30ce8403410772c",
+                "6a29b9edf7c9abd05574e73c",
                 "branch",
-                "9478672e-732b-484f-8fd5-6875693170b5"
+                "af66d570-e2b3-4e6f-be05-8921b325f071"
               ]
             },
             "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -75,7 +74,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n\t\"name\": \"Cali\"\n}",
+              "raw": "{\n\t\"name\": \"Manizalez\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -83,19 +82,18 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/branches/create/franchise/6a281e17d30ce8403410772c",
+              "raw": "http://{{base_url}}/api/v1/branches/create/franchise/6a29b9edf7c9abd05574e73c",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
                 "branches",
                 "create",
                 "franchise",
-                "6a281e17d30ce8403410772c"
+                "6a29b9edf7c9abd05574e73c"
               ]
             },
             "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -133,12 +131,11 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/branches/update/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8",
+              "raw": "http://{{base_url}}/api/v1/branches/update/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
@@ -174,12 +171,11 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/create/franchise/6a281e17d30ce8403410772c/branch/9478672e-732b-484f-8fd5-6875693170b5",
+              "raw": "http://{{base_url}}/api/v1/products/create/franchise/6a281e17d30ce8403410772c/branch/9478672e-732b-484f-8fd5-6875693170b5",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
@@ -212,21 +208,20 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/get/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/34bf4674-6968-4c94-a22e-9881c8002994a",
+              "raw": "http://{{base_url}}/api/v1/products/get/franchise/6a29bb77717084322fdf4cdc/branch/6476f84f-e92d-4eaf-a50c-eb0f3ca56aeb/product/34bf4674-6968-4c94-a22e-9881c8002994a",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
                 "products",
                 "get",
                 "franchise",
-                "6a22ebc5a5e540bc72c22906",
+                "6a29bb77717084322fdf4cdc",
                 "branch",
-                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "6476f84f-e92d-4eaf-a50c-eb0f3ca56aeb",
                 "product",
                 "34bf4674-6968-4c94-a22e-9881c8002994a"
               ]
@@ -252,21 +247,20 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/getHighStock/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/",
+              "raw": "http://{{base_url}}/api/v1/products/getHighStock/franchise/6a29bb77717084322fdf4cdc/branch/6476f84f-e92d-4eaf-a50c-eb0f3ca56aeb/product/",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
                 "products",
                 "getHighStock",
                 "franchise",
-                "6a22ebc5a5e540bc72c22906",
+                "6a29bb77717084322fdf4cdc",
                 "branch",
-                "f1f89cca-d30f-4a24-bb78-a91c392928f8",
+                "6476f84f-e92d-4eaf-a50c-eb0f3ca56aeb",
                 "product",
                 ""
               ]
@@ -289,12 +283,11 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/delete/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/0bbc5e39-dad5-4329-9eeb-4e99945b37ae",
+              "raw": "http://{{base_url}}/api/v1/products/delete/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/0bbc5e39-dad5-4329-9eeb-4e99945b37ae",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
@@ -326,12 +319,11 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/productStock/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1/stock",
+              "raw": "http://{{base_url}}/api/v1/products/productStock/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1/stock",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
@@ -364,12 +356,11 @@
               }
             },
             "url": {
-              "raw": "http://{{base_url}}:8080/api/v1/products/productName/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1",
+              "raw": "http://{{base_url}}/api/v1/products/productName/franchise/6a22ebc5a5e540bc72c22906/branch/f1f89cca-d30f-4a24-bb78-a91c392928f8/product/98f07e53-52eb-4b0d-82a3-256c69a21dd1",
               "protocol": "http",
               "host": [
                 "{{base_url}}"
               ],
-              "port": "8080",
               "path": [
                 "api",
                 "v1",
@@ -389,144 +380,144 @@
       ]
     },
     {
-      "name": "GetAll",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://{{base_url}}:8080/api/v1/franchises/getAll",
-          "protocol": "http",
-          "host": [
-            "{{base_url}}"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "franchises",
-            "getAll"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Create",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"name\":\"Franquisia2\"}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "name": "Franchise",
+      "item": [
+        {
+          "name": "GetAll",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{base_url}}/api/v1/franchises/getAll",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "franchises",
+                "getAll"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://{{base_url}}:8080/api/v1/franchises/create",
-          "protocol": "http",
-          "host": [
-            "{{base_url}}"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "franchises",
-            "create"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Update",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"name\":\"test3\"}",
-          "options": {
-            "raw": {
-              "language": "json"
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Franquisia 002\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}/api/v1/franchises/create",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "franchises",
+                "create"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://{base_url}}:8080/api/v1/franchises/update/6a22ebc5a5e540bc72c22906",
-          "protocol": "http",
-          "host": [
-            "{base_url}}"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "franchises",
-            "update",
-            "6a22ebc5a5e540bc72c22906"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Delete",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"name\":\"test3\"}",
-          "options": {
-            "raw": {
-              "language": "json"
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Franquisia 002\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}/api/v1/franchises/update/6a29bcc6717084322fdf4cde",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "franchises",
+                "update",
+                "6a29bcc6717084322fdf4cde"
+              ]
             }
-          }
+          },
+          "response": []
         },
-        "url": {
-          "raw": "http://{base_url}}:8080/api/v1/franchises/delete/6a22ebbaa5e540bc72c22904",
-          "protocol": "http",
-          "host": [
-            "{base_url}}"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "franchises",
-            "delete",
-            "6a22ebbaa5e540bc72c22904"
-          ]
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"test3\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{base_url}}/api/v1/franchises/delete/6a29bcad717084322fdf4cdd",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "franchises",
+                "delete",
+                "6a29bcad717084322fdf4cdd"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://{{base_url}}/api/v1/franchises/getById/6a29bcc6717084322fdf4cde",
+              "protocol": "http",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "franchises",
+                "getById",
+                "6a29bcc6717084322fdf4cde"
+              ]
+            }
+          },
+          "response": []
         }
-      },
-      "response": []
-    },
-    {
-      "name": "GetById",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://{base_url}}:8080/api/v1/franchises/getById/6a22ebc5a5e540bc72c22906",
-          "protocol": "http",
-          "host": [
-            "{base_url}}"
-          ],
-          "port": "8080",
-          "path": [
-            "api",
-            "v1",
-            "franchises",
-            "getById",
-            "6a22ebc5a5e540bc72c22906"
-          ]
-        }
-      },
-      "response": []
+      ]
     }
   ],
   "event": [
