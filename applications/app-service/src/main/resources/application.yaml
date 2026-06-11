@@ -13,12 +13,8 @@ spring:
     include: null
   data:
     mongodb:
-      # Para Atlas la URI DEBE incluir authSource=admin (los usuarios viven en 'admin').
-      # Si se omite, los heartbeats SDAM del driver intentan 'hello' contra 'local'
-      # y Atlas responde 8000 (Unauthorized), tirando todas las tasks.
+      # Atlas requiere authSource=admin (los usuarios viven en la BD 'admin').
       uri: ${SPRING_DATA_MONGODB_URI:mongodb://127.0.0.1:27017/test?authSource=admin}
-      # Pin explícito de la BD para que ningún componente (HealthIndicator,
-      # MongoTemplate, change streams, etc.) pueda terminar apuntando a 'local'.
       database: ${SPRING_DATA_MONGODB_DATABASE:test}
       enabled: true
 management:
@@ -30,18 +26,15 @@ management:
     health:
       probes:
         enabled: true
-      # Excluye 'mongo' del agregado de /actuator/health para que un fallo de
-      # autorización en Atlas (clusterMonitor) NO marque la task como unhealthy
-      # y el ALB no entre en bucle de reinicios. La app sigue conectándose a Mongo;
-      # solo se desacopla el estado del cluster del health check del ALB.
       group:
         liveness:
           include: "livenessState"
         readiness:
           include: "readinessState"
   health:
-    # Spring Boot 4 reorganizó el módulo Mongo: el ID del indicador puede ser
-    # 'mongo' (legacy) o 'mongodb' (nuevo). Deshabilitamos ambos por seguridad.
+    # Health check de Mongo deshabilitado: el ALB usa /actuator/health/liveness
+    # para no derribar tasks por fallos transitorios de la BD externa.
+    # La salud real de Mongo se monitorea vía Prometheus / CloudWatch logs.
     mongo:
       enabled: false
     mongodb:
